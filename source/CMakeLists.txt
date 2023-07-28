@@ -546,6 +546,10 @@ endif(DETAILED_CU_STATS)
 add_subdirectory(encoder)
 add_subdirectory(common)
 
+
+option(ENABLE_GAS_PREPROCESSOR "Enable gas preprocessor" OFF)
+
+
 if((MSVC_IDE OR XCODE OR GCC) AND ENABLE_ASSEMBLY)
     # this is required because of this cmake bug
     # http://www.cmake.org/Bug/print_bug_page.php?bug_id=8170
@@ -568,17 +572,24 @@ if((MSVC_IDE OR XCODE OR GCC) AND ENABLE_ASSEMBLY)
                 ARGS ${ARM_ARGS} -c ${ASM_SRC} -o ${ASM}.${SUFFIX}
                 DEPENDS ${ASM_SRC})
         endforeach()
-	elseif(ARM64 OR CROSS_COMPILE_ARM64)
+	elseif(ARM64 OR CROSS_COMPILE_ARM64 OR ENABLE_GAS_PREPROCESSOR)
     # compile ARM64 arch asm files here
         enable_language(ASM)
+        if(ENABLE_GAS_PREPROCESSOR)
+        set(ASM_COMPILER_COMMAND "call_gas_preprocessor")
+        set(ASM_COMPILER_ARGUMENTS "")
+        else()
+        set(ASM_COMPILER_COMMAND ${CMAKE_CXX_COMPILER})
+        set(ASM_COMPILER_ARGUMENTS ${ARM_ARGS})
+        endif()
         foreach(ASM ${ARM_ASMS})
             set(ASM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/common/aarch64/${ASM})
             list(APPEND ASM_SRCS ${ASM_SRC})
             list(APPEND ASM_OBJS ${ASM}.${SUFFIX})
             add_custom_command(
                 OUTPUT ${ASM}.${SUFFIX}
-                COMMAND ${CMAKE_CXX_COMPILER}
-                ARGS ${ARM_ARGS} ${ASM_FLAGS} -c ${ASM_SRC} -o ${ASM}.${SUFFIX}
+                COMMAND ${ASM_COMPILER_COMMAND}
+                ARGS ${ASM_COMPILER_ARGUMENTS} ${ASM_FLAGS} -c ${ASM_SRC} -o ${ASM}.${SUFFIX}
                 DEPENDS ${ASM_SRC})
         endforeach()
     elseif(X86)

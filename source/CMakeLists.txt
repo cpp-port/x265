@@ -204,6 +204,7 @@ if(CC STREQUAL "xlc")
     add_definitions(-O3 -qstrict -qhot -qaltivec)
     add_definitions(-qinline=level=10 -qpath=IL:/data/video_files/latest.tpo/)
 endif()
+option(ENABLE_STATIC "Enable generating static libraries" ON)
 # this option is to enable the inclusion of dynamic HDR10 library to the libx265 compilation
 option(ENABLE_HDR10_PLUS "Enable dynamic HDR10 compilation" OFF)
 if(MSVC AND (MSVC_VERSION LESS 1800) AND ENABLE_HDR10_PLUS)
@@ -594,6 +595,7 @@ if((MSVC_IDE OR XCODE OR GCC) AND ENABLE_ASSEMBLY)
     endif()
 endif()
 source_group(ASM FILES ${ASM_SRCS})
+if(ENABLE_STATIC)
 if(ENABLE_HDR10_PLUS)
     add_library(x265-static STATIC $<TARGET_OBJECTS:encoder> $<TARGET_OBJECTS:common> $<TARGET_OBJECTS:dynamicHDR10> ${ASM_OBJS})
     add_library(hdr10plus-static STATIC $<TARGET_OBJECTS:dynamicHDR10>)
@@ -621,6 +623,7 @@ if(ENABLE_HDR10_PLUS)
     install(TARGETS hdr10plus-static
         LIBRARY DESTINATION ${LIB_INSTALL_DIR}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR})
+endif()
 endif()
 
 if(SVTHEVC_FOUND)

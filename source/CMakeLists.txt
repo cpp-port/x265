@@ -710,7 +710,7 @@ if(ENABLE_SHARED)
         elseif(CYGWIN)
             # Cygwin is not officially supported or tested. MinGW with msys is recommended.
         else()
-            list(APPEND LINKER_OPTIONS "-Wl,-Bsymbolic,-znoexecstack")
+            list(APPEND LINKER_OPTIONS "-Wl,-Bsymbolic,-znoexecstack,--whole-archive")
         endif()
     endif()
     set_target_properties(x265-shared PROPERTIES SOVERSION ${X265_BUILD})

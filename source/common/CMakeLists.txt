@@ -84,6 +84,9 @@ if(ENABLE_ASSEMBLY AND X86)
 endif(ENABLE_ASSEMBLY AND X86)
 
 if(ENABLE_ASSEMBLY AND (ARM OR CROSS_COMPILE_ARM))
+
+    message(STATUS "ENABLE_ASSEMBLY AND (ARM OR CROSS_COMPILE_ARM)")
+
     set(C_SRCS asm-primitives.cpp pixel.h mc.h ipfilter8.h blockcopy8.h dct8.h loopfilter.h)
 
     # add ARM assembly/intrinsic files here
@@ -98,6 +101,9 @@ if(ENABLE_ASSEMBLY AND (ARM OR CROSS_COMPILE_ARM))
 endif(ENABLE_ASSEMBLY AND (ARM OR CROSS_COMPILE_ARM))
 
 if(ENABLE_ASSEMBLY AND (ARM64 OR CROSS_COMPILE_ARM64))
+
+    message(STATUS "ENABLE_ASSEMBLY AND (ARM64 OR CROSS_COMPILE_ARM64)")
+
     if(GCC AND (CMAKE_CXX_FLAGS_RELEASE MATCHES "-O3"))
         message(STATUS "Detected CXX compiler using -O3 optimization level")
         add_definitions(-DAUTO_VECTORIZE=1)

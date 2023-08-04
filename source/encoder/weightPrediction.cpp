@@ -510,7 +510,7 @@ void weightAnalyse(Slice& slice, Frame& frame, x265_param& param)
         int p = 0;
         bool bWeighted = false;
 
-        p = sprintf(buf, "poc: %d weights:", slice.m_poc);
+        p = sprintf(buf, sizeof(buf), "poc: %d weights:", slice.m_poc);
         int numPredDir = slice.isInterP() ? 1 : 2;
         for (int list = 0; list < numPredDir; list++)
         {
@@ -518,14 +518,14 @@ void weightAnalyse(Slice& slice, Frame& frame, x265_param& param)
             if (w[0].wtPresent || w[1].wtPresent || w[2].wtPresent)
             {
                 bWeighted = true;
-                p += sprintf(buf + p, " [L%d:R0 ", list);
+                p += snprintf(buf + p, sizeof(buf) - p, " [L%d:R0 ", list);
                 if (w[0].wtPresent)
-                    p += sprintf(buf + p, "Y{%d/%d%+d}", w[0].inputWeight, 1 << w[0].log2WeightDenom, w[0].inputOffset);
+                    p += snprintf(buf + p, sizeof(buf) - p, "Y{%d/%d%+d}", w[0].inputWeight, 1 << w[0].log2WeightDenom, w[0].inputOffset);
                 if (w[1].wtPresent)
-                    p += sprintf(buf + p, "U{%d/%d%+d}", w[1].inputWeight, 1 << w[1].log2WeightDenom, w[1].inputOffset);
+                    p += snprintf(buf + p, sizeof(buf) - p, "U{%d/%d%+d}", w[1].inputWeight, 1 << w[1].log2WeightDenom, w[1].inputOffset);
                 if (w[2].wtPresent)
-                    p += sprintf(buf + p, "V{%d/%d%+d}", w[2].inputWeight, 1 << w[2].log2WeightDenom, w[2].inputOffset);
-                p += sprintf(buf + p, "]");
+                    p += snprintf(buf + p, sizeof(buf) - p, "V{%d/%d%+d}", w[2].inputWeight, 1 << w[2].log2WeightDenom, w[2].inputOffset);
+                p += snprintf(buf + p, sizeof(buf) - p, "]");
             }
         }
 

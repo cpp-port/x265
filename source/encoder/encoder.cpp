@@ -2694,11 +2694,11 @@ void Encoder::printSummary()
 
     char buffer[200];
     if (m_analyzeI.m_numPics)
-        x265_log(m_param, X265_LOG_INFO, "frame I: %s\n", statsString(m_analyzeI, buffer));
+        x265_log(m_param, X265_LOG_INFO, "frame I: %s\n", statsString(m_analyzeI, buffer, sizeof(buffer)));
     if (m_analyzeP.m_numPics)
-        x265_log(m_param, X265_LOG_INFO, "frame P: %s\n", statsString(m_analyzeP, buffer));
+        x265_log(m_param, X265_LOG_INFO, "frame P: %s\n", statsString(m_analyzeP, buffer, sizeof(buffer)));
     if (m_analyzeB.m_numPics)
-        x265_log(m_param, X265_LOG_INFO, "frame B: %s\n", statsString(m_analyzeB, buffer));
+        x265_log(m_param, X265_LOG_INFO, "frame B: %s\n", statsString(m_analyzeB, buffer, sizeof(buffer));
     if (m_param->bEnableWeightedPred && m_analyzeP.m_numPics)
     {
         x265_log(m_param, X265_LOG_INFO, "Weighted P-Frames: Y:%.1f%% UV:%.1f%%\n",

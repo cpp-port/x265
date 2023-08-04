@@ -510,7 +510,7 @@ void weightAnalyse(Slice& slice, Frame& frame, x265_param& param)
         int p = 0;
         bool bWeighted = false;
 
-        p = sprintf(buf, sizeof(buf), "poc: %d weights:", slice.m_poc);
+        p = snprintf(buf, sizeof(buf), "poc: %d weights:", slice.m_poc);
         int numPredDir = slice.isInterP() ? 1 : 2;
         for (int list = 0; list < numPredDir; list++)
         {
@@ -532,7 +532,7 @@ void weightAnalyse(Slice& slice, Frame& frame, x265_param& param)
         if (bWeighted)
         {
             if (p < 80) // pad with spaces to ensure progress line overwritten
-                sprintf(buf + p, "%*s", 80 - p, " ");
+                snprintf(buf + p, sizeof(buf) - p, "%*s", 80 - p, " ");
             x265_log(&param, X265_LOG_FULL, "%s\n", buf);
         }
     }

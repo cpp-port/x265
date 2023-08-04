@@ -3173,13 +3173,13 @@ int RateControl::writeRateControlFrameStats(Frame* curFrame, RateControlEntry* r
         char bUsed[40];
         memset(deltaPOC, 0, sizeof(deltaPOC));
         memset(bUsed, 0, sizeof(bUsed));
-        sprintf(deltaPOC, "deltapoc:~");
-        sprintf(bUsed, "bused:~");
+        snprintf(deltaPOC, sizeof(deltaPOC), "deltapoc:~");
+        snprintf(bUsed, sizeof(bUsed), "bused:~");
 
         for (i = 0; i < num; i++)
         {
-            sprintf(deltaPOC, "%s%d~", deltaPOC, rpsWriter->deltaPOC[i]);
-            sprintf(bUsed, "%s%d~", bUsed, rpsWriter->bUsed[i]);
+            snprintf(deltaPOC, sizeof(deltaPOC), "%s%d~", deltaPOC, rpsWriter->deltaPOC[i]);
+            snprintf(bUsed, sizeof(bUsed), "%s%d~", bUsed, rpsWriter->bUsed[i]);
         }
 
         if (fprintf(m_statFileOut,
